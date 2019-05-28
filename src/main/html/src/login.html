@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <style>
+        body{
+            font-size: 14px;
+            background-image: url("../assets/bg3.jpg");
+        }
+        .card{
+            float: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+            width: 400px;
+            height: 300px;
+            background-image: url("../assets/bg3.jpg");
+        }
+        h2{
+            text-align: center;
+        }
+    </style>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h2>欢迎登陆语言翻译系统</h2>
+            <div>
+                <form>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                               placeholder="Enter email">
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.
+                        </small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="login()">登陆</button>
+                    <button type="button" class="btn btn-primary" onclick="register()">注册</button>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function login(){
+        var email = $('#exampleInputEmail1').val();
+        var password = $('#exampleInputPassword1').val();
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8080/login",
+            //表单的形式提交，则contentType为application/x-www-form-urlencoded，后段可用HttpRequest获取参数
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                "email": email,
+                "password" : password
+            },
+            success: function (data) {
+                console.log(data);
+                if ("login" == data["content"]){
+                    window.location.href='index.html';
+                } else {
+                    alert("您的账户密码有误，请确认注册信息！");
+                }
+            },
+            error: function (data) {
+
+            }
+        })
+    };
+
+    function register(){
+        window.open('register.html')
+    };
+</script>
+</html>

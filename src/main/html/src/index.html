@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>语言翻译系统</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/bootstrap-3.3.7-dist/css/bootstrap.min.css">
+    <style>
+        body{
+            font-size: 14px;
+            background-image: url("../assets/bg3.jpg");
+        }
+        .card{
+            float: none;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+            width: 600px;
+            height: 600px;
+            background-image: url("../assets/bg3.jpg");
+        }
+        h2{
+            text-align: center;
+        }
+        #query{
+            margin-bottom: 5px;
+        }
+        #result{
+            margin-top: 5px;
+        }
+        #logout{
+            float: right;
+        }
+    </style>
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container" >
+    <div class="card">
+        <div class="card-body">
+            <h2>语言翻译系统</h2>
+            <div>
+                <textarea class="form-control" rows="13" id="query" placeholder="请输入待翻译文本"></textarea>
+                <div class="btn-group dropright">
+                    <button type="button" class="btn btn-secondary" data-to="en" onclick="baidutranslate(this)">
+                        英语
+                    </button>
+                    <button type="button" id="do" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="sr-only">Toggle Dropright</span>
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="#" data-to="zh" onclick="baidutranslate(this)">中文</a>
+                        <a class="dropdown-item" href="#" data-to="kor" onclick="baidutranslate(this)">韩语</a>
+                        <a class="dropdown-item" href="#" data-to="fra" onclick="baidutranslate(this)">法语</a>
+                        <a class="dropdown-item" href="#" data-to="jp" onclick="baidutranslate(this)">日语</a>
+                        <a class="dropdown-item" href="#" data-to="spa" onclick="baidutranslate(this)">西班牙语</a>
+                        <a class="dropdown-item" href="#" data-to="ru" onclick="baidutranslate(this)">俄语</a>
+                        <a class="dropdown-item" href="#" data-to="it" onclick="baidutranslate(this)">意大利语</a>
+                    </div>
+                </div>
+                <button class="btn btn-default" type="button" onclick="baiduspeak()" id="baiduspeak">朗读</button>
+                <button class="btn btn-default" type="button" id="copy">复制</button>
+                <button class="btn btn-default" type="button" id="clear">清除</button>
+                <button class="btn btn-default" type="button" id="logout">退出登陆</button>
+                <textarea readonly="readonly" class="form-control" rows="13" id="result"></textarea>
+            </div>
+        </div>
+    </div>
+    <div id="speakhide"></div>
+</div>
+</body>
+<script>
+    var to;
+    function baidutranslate(obj){
+        to = $(obj).attr('data-to');
+        if (to != "en" && to != "zh"){
+            $("#baiduspeak").attr({"disabled":true});
+        } else {
+            $("#baiduspeak").attr({"disabled":false});
+        }
+        $.ajax({
+            type: "GET",
+            url: "http://127.0.0.1:8080/translate",
+            //表单的形式提交，则contentType为application/x-www-form-urlencoded，后段可用HttpRequest获取参数
+            contentType: "application/x-www-form-urlencoded",
+            data: {
+                "query": $("#query").val(),
+                "to" : to
+            },
+            success: function (data) {
+                console.log(data);
+                $("#result").val(data["content"]);
+            },
+            error: function (data) {
+
+            }
+        })
+    };
+    function baiduspeak(){
+        var text=$("#result").val();
+        var url = "http://tts.baidu.com/text2audio?lan="+ to +"&ie=UTF-8&text=" + encodeURI(text);
+        var audio = new Audio(url);
+        audio.src = url;
+        audio.play();
+    };
+    $('#copy').on("click",function () {
+        var Url2=document.getElementById("result");
+        Url2.select(); // url2必须是从textarea获取的对象
+        document.execCommand("Copy"); // 执行浏览器复制命令
+        alert("已复制，可贴粘。")
+    });
+    $('#clear').on("click",function () {
+        $("#query").val('');
+        $("#result").val('');
+    });
+    $('#logout').on("click",function () {
+       window.location.href='login.html'
+    });
+</script>
+</html>

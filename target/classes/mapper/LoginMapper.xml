@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.graduation.demo.dao.Userdao" >
+    <select id="login" resultType="com.graduation.demo.model.User" parameterType="com.graduation.demo.model.User">
+        select * from user where email = #{email,jdbcType=VARCHAR} and password = #{password,jdbcType=VARCHAR}
+    </select>
+    <!--<select id="getKindByName" resultType="java.lang.String">-->
+        <!--select kind from kind where name = #{name,jdbcType=VARCHAR}-->
+    <!--</select>-->
+    <!--<select id="getAllRecyclers" resultMap="RecyclerResultMap">-->
+        <!--select-->
+        <!--<include refid="Recycler_Column_List" />-->
+        <!--from recycler-->
+    <!--</select>-->
+
+    <insert id="register" parameterType="com.graduation.demo.model.User">
+            insert into user(email,password)
+            values(
+            #{email,jdbcType=VARCHAR},
+            #{password,jdbcType=VARCHAR})
+    </insert>
+
+    <!--<update id="updateOrder"  parameterType="com.example.rubbish.model.Order">-->
+        <!--UPDATE order_list-->
+        <!--<trim prefix="set" suffixOverrides=",">-->
+            <!--<if test="name!=null">name = #{name},</if>-->
+            <!--<if test="phone!=null">phone = #{phone},</if>-->
+            <!--<if test="address!=null">address = #{address},</if>-->
+            <!--<if test="time!=null">time = #{time},</if>-->
+            <!--<if test="recyclerName!=null">recyclerName = #{recyclerName},</if>-->
+            <!--<if test="recyclerPhone!=null">recyclerPhone = #{recyclerPhone},</if>-->
+            <!--<if test="recyclerPhoto!=null">recyclerPhoto = #{recyclerPhoto},</if>-->
+        <!--</trim>-->
+        <!--WHERE id=#{id}-->
+    <!--</update>-->
+
+    <!--&lt;!&ndash;返回全部的bean做list的时候，注意：resultType为bean、保证字段对应、imp的方法返回还是List&ndash;&gt;-->
+    <!--<select id="getOrderListByName" resultType="com.example.rubbish.model.Order">-->
+        <!--select * from order_list where name = #{name,jdbcType=VARCHAR}-->
+    <!--</select>-->
+
+    <!--<select id="getOrderListById" resultType="com.example.rubbish.model.Order">-->
+        <!--select * from order_list where id = #{id}-->
+    <!--</select>-->
+
+    <!--<delete id="deleteOrder" parameterType="java.lang.Integer">-->
+        <!--delete from order_list where id = #{id}-->
+    <!--</delete>-->
+</mapper>
